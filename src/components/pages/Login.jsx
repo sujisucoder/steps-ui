@@ -4,6 +4,8 @@ import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect } fr
 import { auth } from '../../firebase-config';
 import { Link, useNavigate } from 'react-router-dom'; 
 import { AlertBox } from "../alertBox/AlertBox";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const provider = new GoogleAuthProvider();
 
@@ -11,6 +13,7 @@ const Login = () => {
   const [loginEmail, setLoginEmail] = useState(""); 
   const [loginPassword, setLoginPassword] = useState(""); 
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate(); 
 
   const validate = () => {
@@ -86,18 +89,7 @@ const Login = () => {
                   />
                   <span>Sign in with Google</span>
                 </a>
-                <a
-                  href="#"
-                  className="flex justify-center items-center gap-2 border border-blue-500 bg-white p-3 h-10 w-48 rounded-md text-gray-800 transition ease duration-300 shadow-md hover:bg-blue-100"
-                >
-                  <img
-                    width="18"
-                    height="18"
-                    src="https://img.icons8.com/ios-filled/50/mac-os.png"
-                    alt="mac-os"
-                  />
-                  <span>Sign in with Apple</span>
-                </a>
+               
               </div>
               <div className="relative flex items-center justify-center py-8 ">
                 <div className="bg-white text-black px-4">Or with email</div>
@@ -115,15 +107,25 @@ const Login = () => {
                 />
                 {errors.email && <AlertBox message={errors.email} />}
                 
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={loginPassword}
-                  onChange={(event) => {
-                    setLoginPassword(event.target.value); 
-                  }}
-                  className="p-4 h-10 rounded-md border border-blue-500 shadow-md transition ease duration-300 focus:border-blue-500 focus:bg-blue-50"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    value={loginPassword}
+                    onChange={(event) => {
+                      setLoginPassword(event.target.value); 
+                    }}
+                    className="p-4 h-10 w-full rounded-md border border-blue-500 shadow-md transition ease duration-300 focus:border-blue-500 focus:bg-blue-50"
+                  />
+                  <span
+                    onMouseDown={() => setShowPassword(true)}
+                    onMouseUp={() => setShowPassword(false)}
+                    onMouseLeave={() => setShowPassword(false)}
+                    className="absolute right-3 top-3 cursor-pointer"
+                  >
+                    <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+                  </span>
+                </div>
                 {errors.password && <AlertBox message={errors.password} />}
                 
                 <a href="#" className="text-blue-500 text-sm">

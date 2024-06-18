@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert } from "../ui/alert";
 import ImageSlider from "../carousel/ImageSlider";
 import Parallax from "../parallax/Parallax";
@@ -8,6 +8,7 @@ import TabsDemo from "../customTabs/TabsDemo";
 import backgroundImage from "../../assets/testimonial-img.jpg";
 import ProductCarousel from "../products-carousel/ProductCarousel";
 import Testimonial from "../testimonial/Testimonial";
+import axios from "axios";
 
 const slides = [
   {
@@ -26,10 +27,21 @@ const slides = [
 
 function LandingPage() {
   const [alertFlag, setAlertFlag] = useState(false);
+  const [backendMessage, setBackendMessage] = useState("");
   const handleClick = () => {
     console.log("clicked");
     setAlertFlag(true);
   };
+
+
+  useEffect(()=>{
+    // fetch from backend 
+    axios.get('http://localhost:5000/')
+    .then(response => {
+      setBackendMessage(response.data);
+    })
+
+  },[])
 
   return (
     <div className="mt-[65px]">
@@ -39,8 +51,7 @@ function LandingPage() {
             alertFlag ? "hidden" : "flex justify-evenly text-sm sm:text-lg"
           }
         >
-          we have added 5 new exciting courses to our list head to our latest
-          courses section to know more
+         {backendMessage}
           <span className="cursor-pointer" onClick={handleClick}>
             &#x2716;
           </span>
